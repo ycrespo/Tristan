@@ -3,7 +3,12 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Quartz;
+using Quartz.Impl;
+using Quartz.Spi;
 using Serilog;
+using Tristan.Jobs;
+using Tristan.QuartzScheduler;
 
 namespace Tristan
 {
@@ -37,7 +42,7 @@ namespace Tristan
                 .ConfigureServices((hostContext, services) =>
                 {
                     Configure(hostContext);
-                    services.AddHostedService<Worker>();
+                    ConfigureQuartz(services);
                 }) 
                 .ConfigureLogging(loggingBuilder =>
                 {
@@ -58,5 +63,21 @@ namespace Tristan
                 .AddEnvironmentVariables()
                 .Build();
         }
+
+        static void ConfigureQuartz(IServiceCollection services)
+        {
+            // Add Quartz services
+            services.AddSingleton<IJobFactory, SingletonJobFactory>();
+            services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
+
+            // Add our job
+            services.AddSingleton<LoggerJob>();services.AddSingleton(new JobSchedule(
+                jobType: typeof(LoggerJob),
+                cronExpression: Configuration.GetValue<string>("Quartz:CronExpression")));
+            
+            services.AddHostedService<QuartzHostedService>();
+        }
+
+
     }
 }
