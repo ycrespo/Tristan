@@ -10,9 +10,10 @@ using Quartz.Impl;
 using Quartz.Spi;
 using Serilog;
 using Tristan.Data.DataAccess;
-using Tristan.IoC;
 using Tristan.Jobs;
 using Tristan.QuartzScheduler;
+using Tristan.IoC;
+using Tristan.Settings;
 
 namespace Tristan
 {
@@ -48,6 +49,8 @@ namespace Tristan
                     Configure(hostContext);
                     ConfigureQuartz(services);
                     
+                    services.Configure<TristanSettings>(Configuration.GetSection("TristanSettings"));
+
                     services.AddDbContext<TristanContext>(
                         options => options.UseNpgsql(Configuration.GetConnectionString("TristanDb"),
                             npgsqlOptions => npgsqlOptions.UseNodaTime()));
@@ -55,7 +58,7 @@ namespace Tristan
                 })
                 .ConfigureContainer<ContainerBuilder>(builder =>
                 {
-                    builder.RegisterModule(new TristanModule());
+                    builder.RegisterModule(new TristanModule(Configuration));
                 })
                 .ConfigureLogging(loggingBuilder =>
                 {
@@ -85,9 +88,9 @@ namespace Tristan
             services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
 
             // Add our job
-            services.AddSingleton<LoggerJob>();services.AddSingleton(new JobSchedule(
-                jobType: typeof(LoggerJob),
-                cronExpression: Configuration.GetValue<string>("Quartz:CronExpression")));
+            services.AddSingleton<MoveFilesJob>();
+            services.AddSingleton(new JobSchedule(typeof(MoveFilesJob), 
+                    Configuration.GetValue<string>("Quartz:CronExpression")));
             
             services.AddHostedService<QuartzHostedService>();
         }
