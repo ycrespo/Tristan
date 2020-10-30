@@ -10,8 +10,8 @@ using Tristan.Data.DataAccess;
 namespace Tristan.Data.Migrations
 {
     [DbContext(typeof(TristanContext))]
-    [Migration("20201022192039_AddFieldstoTblDoc")]
-    partial class AddFieldstoTblDoc
+    [Migration("20201022192039_AddFieldstoDoc")]
+    partial class AddFieldstoDoc
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace Tristan.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.0-rc.2.20475.6");
 
-            modelBuilder.Entity("Tristan.Data.Models.TblDoc", b =>
+            modelBuilder.Entity("Tristan.Data.Models.Doc", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -58,7 +58,7 @@ namespace Tristan.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TblDoc");
+                    b.ToTable("Doc");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -35,6 +36,14 @@ namespace Tristan.Core.ExtensionMethods
             var docs = source.ToList();
             foreach (var doc in docs) 
                 doc.NumberOfRetry += 1;
+            return docs;
+        }
+        
+        public static IEnumerable<Doc> SetOccurredOn(this IEnumerable<Doc> source)
+        {
+            var docs = source.ToList();
+            foreach (var doc in docs) 
+                doc.OccurredOn = DateTime.Now;
             return docs;
         }
     }

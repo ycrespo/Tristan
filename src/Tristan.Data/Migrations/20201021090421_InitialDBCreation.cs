@@ -8,7 +8,7 @@ namespace Tristan.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "TblDoc",
+                name: "Doc",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -19,14 +19,14 @@ namespace Tristan.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TblDoc", x => x.Id);
+                    table.PrimaryKey("PK_Doc", x => x.Id);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "TblDoc");
+                name: "Doc");
         }
     }
 }

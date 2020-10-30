@@ -21,7 +21,7 @@ namespace Tristan.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.0-rc.2.20475.6");
 
-            modelBuilder.Entity("Tristan.Data.Models.TblDoc", b =>
+            modelBuilder.Entity("Tristan.Data.Models.Doc", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -41,7 +41,7 @@ namespace Tristan.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TblDoc");
+                    b.ToTable("Doc");
                 });
 #pragma warning restore 612, 618
         }

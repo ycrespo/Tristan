@@ -8,7 +8,7 @@ namespace Tristan.Data.Migrations
         {
             migrationBuilder.AlterColumn<string>(
                 name: "DestinationDir",
-                table: "TblDoc",
+                table: "Doc",
                 type: "character varying(2048)",
                 maxLength: 2048,
                 nullable: true,
@@ -21,7 +21,7 @@ namespace Tristan.Data.Migrations
         {
             migrationBuilder.AlterColumn<string>(
                 name: "DestinationDir",
-                table: "TblDoc",
+                table: "Doc",
                 type: "character varying(2048)",
                 maxLength: 2048,
                 nullable: false,

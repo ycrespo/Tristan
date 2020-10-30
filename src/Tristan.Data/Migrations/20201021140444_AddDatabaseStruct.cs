@@ -9,7 +9,7 @@ namespace Tristan.Data.Migrations
         {
             migrationBuilder.AlterColumn<string>(
                 name: "Path",
-                table: "TblDoc",
+                table: "Doc",
                 type: "character varying(2048)",
                 maxLength: 2048,
                 nullable: false,
@@ -20,7 +20,7 @@ namespace Tristan.Data.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "Filename",
-                table: "TblDoc",
+                table: "Doc",
                 type: "character varying(100)",
                 maxLength: 100,
                 nullable: false,
@@ -31,7 +31,7 @@ namespace Tristan.Data.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "Extension",
-                table: "TblDoc",
+                table: "Doc",
                 type: "character varying(10)",
                 maxLength: 10,
                 nullable: false,
@@ -42,7 +42,7 @@ namespace Tristan.Data.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "DestinationDir",
-                table: "TblDoc",
+                table: "Doc",
                 type: "character varying(2048)",
                 maxLength: 2048,
                 nullable: false,
@@ -53,7 +53,7 @@ namespace Tristan.Data.Migrations
 
             migrationBuilder.AddColumn<DateTime>(
                 name: "OccurredOn",
-                table: "TblDoc",
+                table: "Doc",
                 type: "timestamp without time zone",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
@@ -63,11 +63,11 @@ namespace Tristan.Data.Migrations
         {
             migrationBuilder.DropColumn(
                 name: "OccurredOn",
-                table: "TblDoc");
+                table: "Doc");
 
             migrationBuilder.AlterColumn<string>(
                 name: "Path",
-                table: "TblDoc",
+                table: "Doc",
                 type: "text",
                 nullable: true,
                 oldClrType: typeof(string),
@@ -76,7 +76,7 @@ namespace Tristan.Data.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "Filename",
-                table: "TblDoc",
+                table: "Doc",
                 type: "text",
                 nullable: true,
                 oldClrType: typeof(string),
@@ -85,7 +85,7 @@ namespace Tristan.Data.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "Extension",
-                table: "TblDoc",
+                table: "Doc",
                 type: "text",
                 nullable: true,
                 oldClrType: typeof(string),
@@ -94,7 +94,7 @@ namespace Tristan.Data.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "DestinationDir",
-                table: "TblDoc",
+                table: "Doc",
                 type: "text",
                 nullable: true,
                 oldClrType: typeof(string),

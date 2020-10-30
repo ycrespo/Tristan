@@ -1,15 +1,14 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tristan.Core.Models;
-using Tristan.Data.Models;
 
 namespace Tristan.Data.Gateways
 {
     public interface IContextGateway
     {
-        Task<IResult<IEnumerable<TblDoc>, Error.Exceptional>> GetPendingDocs();
-        Task<IEnumerable<TblDoc>> SaveAsync(IEnumerable<TblDoc> entities);
-        Task<IEnumerable<TblDoc>> UpdateAsync(IEnumerable<TblDoc> tblDocs);
-        Task<IEnumerable<TblDoc>> DeleteAsync(IEnumerable<TblDoc> tblDocs);
+        Task<IEnumerable<Doc>> GetPendingDocsAsync();
+        Task<IEnumerable<Doc>> SaveAsync(IEnumerable<Doc> entities);
+        Task<IEnumerable<Doc>> UpdateAsync(IEnumerable<Doc> Docs);
+        Task<IEnumerable<Doc>> DeleteAsync(IEnumerable<Doc> Docs);
     }
 }

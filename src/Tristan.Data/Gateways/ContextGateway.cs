@@ -3,10 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Tristan.Core.ExtensionMethods;
 using Tristan.Data.DataAccess;
-using Tristan.Data.Models;
 using Tristan.Core.Models;
-using Tristan.Data.ExtensionMethods;
 
 namespace Tristan.Data.Gateways
 {
@@ -21,58 +20,60 @@ namespace Tristan.Data.Gateways
             _logger = logger;
         }
         
-        public Task<IResult<IEnumerable<TblDoc>, Error.Exceptional>> GetPendingDocs()
+        public async Task<IEnumerable<Doc>> GetPendingDocsAsync()
         {
-            return Result.Try(
-                async () => (await _context.TblDoc.Where(doc => !doc.Moved).ToListAsync()).AsEnumerable(),
+            var result = await Result.Try(
+                async () => (await _context.Doc.Where(doc => !doc.Moved).ToListAsync()).AsEnumerable(),
                 ex => _logger.LogError(ex, "Cannot get pending photos from database."));
+            
+            return result.Success ?? new List<Doc>();
         }
         
         
-        public async Task<IEnumerable<TblDoc>> SaveAsync(IEnumerable<TblDoc> entities)
+        public async Task<IEnumerable<Doc>> SaveAsync(IEnumerable<Doc> entities)
         {
-            var tblDocs = entities.SetOccurredOn().ToList();
+            var Docs = entities.SetOccurredOn().ToList();
             
-            foreach (var tblDoc in tblDocs)
+            foreach (var Doc in Docs)
             {
-                var inserted = await _context.AddAsync(tblDoc);
+                var inserted = await _context.AddAsync(Doc);
 
-                tblDoc.Id = inserted.Entity.Id;
+                Doc.Id = inserted.Entity.Id;
             }
             
             var result = await SaveChangesAsync("Cannot persist data to the database!!!");
             
             return result.HasError()
-                ? new List<TblDoc>()
-                : tblDocs;
+                ? new List<Doc>()
+                : Docs;
         }
         
-        public async Task<IEnumerable<TblDoc>> UpdateAsync(IEnumerable<TblDoc> tblDocs)
+        public async Task<IEnumerable<Doc>> UpdateAsync(IEnumerable<Doc> Docs)
         {
-            var entities = tblDocs.SetOccurredOn().ToList();
+            var entities = Docs.SetOccurredOn().ToList();
 
             foreach (var doc in entities)
             {
-                _context.TblDoc.Update(doc);
+                _context.Doc.Update(doc);
             }
             
             var result = await SaveChangesAsync("Can not Update documents in database!!!"); 
 
             return result.HasError()
-                ? new List<TblDoc>()
+                ? new List<Doc>()
                 : entities;
         }
         
-        public async Task<IEnumerable<TblDoc>> DeleteAsync(IEnumerable<TblDoc> tblDocs)
+        public async Task<IEnumerable<Doc>> DeleteAsync(IEnumerable<Doc> Docs)
         {
-            var entities = tblDocs.ToList();
+            var entities = Docs.ToList();
 
-            _context.TblDoc.RemoveRange(entities);
+            _context.Doc.RemoveRange(entities);
 
             var result = await SaveChangesAsync("Can not delete documents in database!!!");
 
             return result.HasError()
-                ? new List<TblDoc>()
+                ? new List<Doc>()
                 : entities;
         }
         

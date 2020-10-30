@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Tristan.Data.Models;
+using Tristan.Core.Models;
 
 namespace Tristan.Data.DataAccess
 {
@@ -7,36 +7,36 @@ namespace Tristan.Data.DataAccess
     {
         public TristanContext(DbContextOptions options) : base(options) { }
 
-        public DbSet<TblDoc> TblDoc { get; set; }
+        public DbSet<Doc> Doc { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            #region TblDoc Builder
-            var tblDocBuilder = modelBuilder.Entity<TblDoc>();
+            #region Doc Builder
+            var DocBuilder = modelBuilder.Entity<Doc>();
 
-            tblDocBuilder
+            DocBuilder
                 .HasKey(doc => doc.Id);
             
-            tblDocBuilder
+            DocBuilder
                 .Property(doc => doc.Filename)
                 .HasMaxLength(maxLength: 100)
                 .IsRequired();
             
-            tblDocBuilder
+            DocBuilder
                 .Property(doc => doc.Extension)
                 .HasMaxLength(maxLength: 10)
                 .IsRequired();
             
-            tblDocBuilder
+            DocBuilder
                 .Property(doc => doc.Path)
                 .HasMaxLength(maxLength: 2048)
                 .IsRequired();
 
-            tblDocBuilder
+            DocBuilder
                 .Property(doc => doc.DestinationDir)
                 .HasMaxLength(maxLength: 2048);
 
-            tblDocBuilder
+            DocBuilder
                 .Property(doc => doc.OccurredOn)
                 .IsRequired();
             #endregion
