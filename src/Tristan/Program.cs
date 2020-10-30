@@ -47,10 +47,9 @@ namespace Tristan
                 .ConfigureServices((hostContext, services) =>
                 {
                     Configure(hostContext);
-                    ConfigureQuartz(services);
                     
                     services.Configure<TristanSettings>(Configuration.GetSection("TristanSettings"));
-
+                    services.AddHostedService<QuartzHostedService>();
                     services.AddDbContext<TristanContext>(
                         options => options.UseNpgsql(Configuration.GetConnectionString("TristanDb"),
                             npgsqlOptions => npgsqlOptions.UseNodaTime()));
@@ -59,6 +58,7 @@ namespace Tristan
                 .ConfigureContainer<ContainerBuilder>(builder =>
                 {
                     builder.RegisterModule(new TristanModule(Configuration));
+                    builder.RegisterModule(new QuartzModule(Configuration));
                 })
                 .ConfigureLogging(loggingBuilder =>
                 {
@@ -80,21 +80,5 @@ namespace Tristan
                 .AddEnvironmentVariables()
                 .Build();
         }
-
-        private static void ConfigureQuartz(IServiceCollection services)
-        {
-            // Add Quartz services
-            services.AddSingleton<IJobFactory, SingletonJobFactory>();
-            services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
-
-            // Add our job
-            services.AddSingleton<MoveFilesJob>();
-            services.AddSingleton(new JobSchedule(typeof(MoveFilesJob), 
-                    Configuration.GetValue<string>("Quartz:CronExpression")));
-            
-            services.AddHostedService<QuartzHostedService>();
-        }
-
-
     }
 }

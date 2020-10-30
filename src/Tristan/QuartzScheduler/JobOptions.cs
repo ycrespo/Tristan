@@ -2,9 +2,9 @@ using System;
 
 namespace Tristan.QuartzScheduler
 {
-    public class JobSchedule
+    public class JobOptions
     {
-        public JobSchedule(Type jobType, string cronExpression)
+        public JobOptions(Type jobType, string cronExpression)
         {
             JobType = jobType;
             CronExpression = cronExpression;

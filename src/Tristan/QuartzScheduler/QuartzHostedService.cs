@@ -12,12 +12,12 @@ namespace Tristan.QuartzScheduler
     {
         private readonly ISchedulerFactory _schedulerFactory;
         private readonly IJobFactory _jobFactory;
-        private readonly IEnumerable<JobSchedule> _jobSchedules;
+        private readonly IEnumerable<JobOptions> _jobSchedules;
 
         public QuartzHostedService(
             ISchedulerFactory schedulerFactory,
             IJobFactory jobFactory,
-            IEnumerable<JobSchedule> jobSchedules)
+            IEnumerable<JobOptions> jobSchedules)
         {
             _schedulerFactory = schedulerFactory;
             _jobSchedules = jobSchedules;
@@ -47,9 +47,9 @@ namespace Tristan.QuartzScheduler
             await Scheduler?.Shutdown(cancellationToken);
         }
 
-        private static IJobDetail CreateJob(JobSchedule schedule)
+        private static IJobDetail CreateJob(JobOptions options)
         {
-            var jobType = schedule.JobType;
+            var jobType = options.JobType;
             return JobBuilder
                 .Create(jobType)
                 .WithIdentity(jobType.FullName)
@@ -57,13 +57,13 @@ namespace Tristan.QuartzScheduler
                 .Build();
         }
 
-        private static ITrigger CreateTrigger(JobSchedule schedule)
+        private static ITrigger CreateTrigger(JobOptions options)
         {
             return TriggerBuilder
                 .Create()
-                .WithIdentity($"{schedule.JobType.FullName}.trigger")
-                .WithCronSchedule(schedule.CronExpression)
-                .WithDescription(schedule.CronExpression)
+                .WithIdentity($"{options.JobType.FullName}.trigger")
+                .WithCronSchedule(options.CronExpression)
+                .WithDescription(options.CronExpression)
                 .Build();
         }
     }
